@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             xmlns:ImagesModel="clr-namespace:Images.Models"
+             xmlns:VM="clr-namespace:Images.ViewModels"
+             x:Class="Images.MainPage"
+             x:DataType="VM:MainPageViewModel"
+             BackgroundColor="White">
+    <ContentPage.Behaviors>
+        <xct:EventToCommandBehavior 
+            EventName="Appearing"
+            Command="{Binding OnAppearingCommand}"/>
+    </ContentPage.Behaviors>
+    <ContentPage.Content>
+        <StackLayout>
+            <Label Style="{StaticResource CenterTile}" Text="Welcome back!">
+                <Label.Triggers>
+                    <DataTrigger TargetType="Label"
+                                 Binding="{Binding WelcomeMessage}"
+                                 Value="True">
+                        <Setter Property="Text"
+                                Value="Welcome!"/>
+                    </DataTrigger>
+                </Label.Triggers>
+            </Label>
+            <!--<ScrollView Margin="0,0,0,5"
+                        x:Name="scrollImages">
+                <StackLayout Margin="5" BindableLayout.ItemsSource="{Binding Images}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="ImagesModel:ImageModel">
+                            <Grid
+                                WidthRequest="{Binding Source={x:RelativeSource AncestorType={x:Type VM:MainPageViewModel}},Path=ImageWidth}"
+                                HeightRequest="{Binding Source={x:RelativeSource AncestorType={x:Type VM:MainPageViewModel}},Path=ImageHeight}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="1"/>
+                                </Grid.RowDefinitions>
+                                <Image Margin="1" Source="{Binding Download_url}" Aspect="AspectFit"/>
+                                <Line Grid.Row="1" BackgroundColor="Black" />
+                            </Grid>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </StackLayout>
+                <ScrollView.Behaviors>
+                    <xct:EventToCommandBehavior
+                        EventName="Scrolled"
+                        Command="{Binding OnScrollCommand}"
+                        CommandParameter="{Binding Source={x:Reference scrollImages},Path=.}"/>
+                    <xct:EventToCommandBehavior
+                        EventName="LayoutChanged"
+                        Command="{Binding OnLayoutChangedCommand}"/>
+                </ScrollView.Behaviors>
+            </ScrollView>-->
+
+            <ListView 
+                Margin="0,5,0,5"
+                x:Name="scrollImages"
+                HasUnevenRows="True"
+                ItemsSource="{Binding Images}"
+                ItemAppearing="ScrollImages_ItemAppearing">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="ImagesModel:ImageModel">
+                        <ViewCell>
+                            <Grid
+                                Padding="0,5,0,5"
+                            WidthRequest="{Binding Source={x:RelativeSource AncestorType={x:Type VM:MainPageViewModel}},Path=ImageWidth}"
+                            HeightRequest="{Binding Source={x:RelativeSource AncestorType={x:Type VM:MainPageViewModel}},Path=ImageHeight}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="1"/>
+                                </Grid.RowDefinitions>
+                                <Image Margin="1" Source="{Binding Download_url}" Aspect="AspectFit"/>
+                                <Line Grid.Row="1" BackgroundColor="Black" />
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+                <ListView.Behaviors>
+                    <xct:EventToCommandBehavior
+                        EventName="SizeChanged"
+                        Command="{Binding OnLayoutChangedCommand}"/>
+                </ListView.Behaviors>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
